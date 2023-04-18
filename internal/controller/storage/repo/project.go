@@ -1,8 +1,8 @@
-package models
+package repo
 
 type ProjectReq struct {
 	DeveloperId  string
-	Name         string
+	ProjectName  string
 	StartedDate  string
 	FinishedDate string
 	Status       string
@@ -12,9 +12,13 @@ type ProjectReq struct {
 type ProjectRes struct {
 	Id           int
 	DeveloperId  string
-	Name         string
+	ProjectName  string
 	StartedDate  string
 	FinishedDate string
 	Status       string
 	FileUrl      string
+}
+
+type AllProject struct {
+	Projects []ProjectRes
 }

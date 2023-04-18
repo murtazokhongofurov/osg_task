@@ -1,0 +1,124 @@
+basePath: /v1
+definitions:
+  models.EmployeeReq:
+    properties:
+      birth_date:
+        type: string
+      full_name:
+        type: string
+      phone:
+        type: string
+      position:
+        type: string
+      profile_photo:
+        type: string
+      role:
+        type: string
+    type: object
+  models.FailureInfo:
+    properties:
+      description:
+        type: string
+      error: {}
+      status_code:
+        type: integer
+    type: object
+host: localhost:7777
+info:
+  contact:
+    email: gofurovmurtazoxon@gmail.com
+    name: Murtazoxon
+    url: https://t.me/murtazokhon_gofurov
+  description: This is Task api server
+  termsOfService: 2 term OSG
+  title: Online Service Group Task api
+  version: "1.0"
+paths:
+  /employee:
+    post:
+      consumes:
+      - application/json
+      description: Through this api, can create an employee
+      parameters:
+      - description: CreateEmployee
+        in: body
+        name: body
+        required: true
+        schema:
+          $ref: '#/definitions/models.EmployeeReq'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/models.FailureInfo'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/models.FailureInfo'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/models.FailureInfo'
+      summary: Create new employee
+      tags:
+      - Employee
+  /employee/{id}:
+    get:
+      consumes:
+      - application/json
+      description: Through this api, can GET an employee
+      parameters:
+      - description: id
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.FailureInfo'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/models.FailureInfo'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/models.FailureInfo'
+      summary: GET an employee
+      tags:
+      - Employee
+  /employees:
+    get:
+      consumes:
+      - application/json
+      description: Through this api, can GET employees
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.FailureInfo'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/models.FailureInfo'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/models.FailureInfo'
+      summary: GET employees
+      tags:
+      - Employee
+securityDefinitions:
+  BearerAuth:
+    in: header
+    name: Authorization
+    type: apiKey
+swagger: "2.0"

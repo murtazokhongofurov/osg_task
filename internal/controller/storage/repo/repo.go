@@ -1,18 +1,26 @@
 package repo
 
-import (
-	m "github.com/osg_task/internal/controller/storage/repo/models"
-
-)
 
 
 type TaskStorageI interface {
-	CreateUser(*m.User) (*m.User, error)
-	UpdateUser(*m.User) (*m.User, error)
-	GetUser(id string) (*m.User, error)
-	GetAllUser() (*m.AllUser, error)
-	DeleteUser(id string) error
+	CreateEmployee(e *Employee) (*Employee, error)
+	UpdateEmployee(e *Employee) (*Employee, error)
+	GetEmployee(id string) (*Employee, error)
+	GetAllEmployee() (*AllEmployee, error)
+	DeleteEmployee(id string) error
 
+	CreateDeveloper(*Developer) (*Developer, error)
 
-	CreateProject()
+	CreateProject(*ProjectReq) (*ProjectRes, error)
+	GetProject(id int) (*ProjectRes, error)
+	GetProjectEmployeeId(id string) (*AllProject, error)
+	GetAllProject() (*AllProject, error)
+	UpdateProject(*ProjectRes) (*ProjectRes, error)
+	DeleteProject(id int) error
+
+	CreateTask(*TaskReq) (*TaskRes, error) 
+	GetTask(id int) (*TaskRes, error)
+	GetTaskDeveloperId(id string) (*AllTask, error)
+	UpdateTask(*TaskRes) (*TaskRes, error)
+	DeleteTask(id int) error
 }

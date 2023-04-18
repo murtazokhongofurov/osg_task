@@ -1,0 +1,6 @@
+CREATE TABLE IF NOT EXISTS attendance(
+    id SERIAL NOT NULL PRIMARY KEY,
+    type VARCHAR(100),
+    employee_id UUID REFERENCES employees(id),
+    created_at TIMESTAMP WITHOUT TIME ZONE NOT NULL DEFAULT NOW()
+);
