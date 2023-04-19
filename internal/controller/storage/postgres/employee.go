@@ -2,13 +2,14 @@ package postgres
 
 import (
 	"context"
+	"database/sql"
+	"fmt"
 	"time"
 
 	m "github.com/osg_task/internal/controller/storage/repo"
 )
 
-var birthdate  *time.Time
-
+var birthdate *time.Time
 
 func (e *TaskRepo) CreateEmployee(employee *m.Employee) (*m.Employee, error) {
 	var res m.Employee
@@ -32,7 +33,7 @@ func (e *TaskRepo) CreateEmployee(employee *m.Employee) (*m.Employee, error) {
 	if err != nil {
 		return &m.Employee{}, err
 	}
-	res.BirthDate = birthdate.Format(time.RFC1123)
+	res.BirthDate = birthdate.Format("2006/01/02")
 
 	return &res, nil
 }
@@ -117,6 +118,42 @@ func (e *TaskRepo) DeleteEmployee(id string) error {
 	return nil
 }
 
+func (e *TaskRepo) CheckField(req *m.CheckfieldReq) (*m.CheckfieldRes, error) {
+	res := &m.CheckfieldRes{Exists: false}
+	query := fmt.Sprintf("SELECT 1 FROM admins WHERE %s=$1", req.Field)
+	var temp = 0
+	err := e.db.Pool.QueryRow(context.Background(), query, req.Value).Scan(&temp)
+	if err == sql.ErrNoRows {
+		return res, nil
+	} else if err != nil {
+		return res, nil
+	}
+	if temp == 1 {
+		res.Exists = true
+		return res, nil
+	}
+	return res, nil
+}
+
+func (e *TaskRepo) GetEmployeeByPhone(req *m.PhoneNumber) (*m.Employee, error) {
+	var res m.Employee
+	query := `
+	SELECT 
+		id, full_name, profile_photo, phone, 
+		birth_date, role, position	
+	FROM 
+		employees
+	WHERE
+		phone=$1`
+	err := e.db.Pool.QueryRow(context.Background(), query, req.Phone).
+		Scan(&res.Id, &res.FullName, &res.ProfilePhoto, &res.Phone, &birthdate, &res.Role, &res.Position)
+	if err != nil {
+		return &m.Employee{}, err
+	}
+	res.BirthDate = birthdate.Format("2006/01/02")
+	return &res, nil
+}
+
 func (e *TaskRepo) CreateDeveloper(develop *m.Developer) (*m.Developer, error) {
 	var res m.Developer
 	query := `
@@ -127,9 +164,26 @@ func (e *TaskRepo) CreateDeveloper(develop *m.Developer) (*m.Developer, error) {
 	RETURNING 
 		id, employee_id, developer_role
 	`
-	err := e.db.Pool.QueryRow(context.Background(), query, 
-	develop.Id, develop.EmployeeId, develop.DeveloperRole).
-	Scan(&res.Id, &res.EmployeeId, &res.DeveloperRole)
+	err := e.db.Pool.QueryRow(context.Background(), query,
+		develop.Id, develop.EmployeeId, develop.DeveloperRole).
+		Scan(&res.Id, &res.EmployeeId, &res.DeveloperRole)
+	if err != nil {
+		return &m.Developer{}, err
+	}
+	return &res, nil
+}
+
+func (e *TaskRepo) GetDeveloper(id string) (*m.Developer, error) {
+	var res m.Developer
+	query := `
+	SELECT 
+		id, employee_id, developer_role
+	FROM 
+		developers
+	WHERE
+		id=$1`
+	err := e.db.Pool.QueryRow(context.Background(), query, id).
+		Scan(&res.Id, &res.EmployeeId, &res.DeveloperRole)
 	if err != nil {
 		return &m.Developer{}, err
 	}

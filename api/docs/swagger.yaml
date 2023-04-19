@@ -1,10 +1,66 @@
 basePath: /v1
 definitions:
+  models.AllProject:
+    properties:
+      projects:
+        items:
+          $ref: '#/definitions/models.ProjectRes'
+        type: array
+    type: object
+  models.AllTask:
+    properties:
+      tasks:
+        items:
+          $ref: '#/definitions/models.TaskRes'
+        type: array
+    type: object
+  models.DeveloperReq:
+    properties:
+      developer_role:
+        type: string
+      employee_id:
+        type: string
+    type: object
+  models.DeveloperRes:
+    properties:
+      developer_role:
+        type: string
+      employee_id:
+        type: string
+      id:
+        type: string
+    type: object
+  models.EmployeeList:
+    properties:
+      employees:
+        items:
+          $ref: '#/definitions/models.EmployeeRes'
+        type: array
+    type: object
   models.EmployeeReq:
     properties:
       birth_date:
+        example: 2006/01/02
         type: string
       full_name:
+        type: string
+      phone:
+        type: string
+      position:
+        type: string
+      profile_photo:
+        type: string
+      role:
+        type: string
+    type: object
+  models.EmployeeRes:
+    properties:
+      birth_date:
+        example: 2006/01/02
+        type: string
+      full_name:
+        type: string
+      id:
         type: string
       phone:
         type: string
@@ -23,6 +79,139 @@ definitions:
       status_code:
         type: integer
     type: object
+  models.FileResponse:
+    properties:
+      media_type:
+        type: string
+      url:
+        type: string
+    type: object
+  models.GetEmployee:
+    properties:
+      access_token:
+        type: string
+      birth_date:
+        type: string
+      full_name:
+        type: string
+      id:
+        type: string
+      phone:
+        type: string
+      position:
+        type: string
+      profile_photo:
+        type: string
+      role:
+        type: string
+    type: object
+  models.ProjectReq:
+    properties:
+      developer_id:
+        type: string
+      file_url:
+        type: string
+      finished_date:
+        example: 2006/01/02
+        type: string
+      project_name:
+        type: string
+      started_date:
+        example: 2006/01/02
+        type: string
+    type: object
+  models.ProjectRes:
+    properties:
+      developer_id:
+        type: string
+      file_url:
+        type: string
+      finished_date:
+        example: 2006/01/02
+        type: string
+      id:
+        type: integer
+      project_name:
+        type: string
+      started_date:
+        example: 2006/01/02
+        type: string
+      status:
+        type: string
+    type: object
+  models.StatusUpdate:
+    properties:
+      id:
+        type: integer
+      status:
+        type: string
+    type: object
+  models.Success:
+    properties:
+      message:
+        type: string
+      status_code:
+        type: integer
+    type: object
+  models.TaskReq:
+    properties:
+      description:
+        type: string
+      developer_id:
+        type: string
+      end_date:
+        example: 2006/01/02
+        type: string
+      file_url:
+        type: string
+      started_date:
+        example: 2006/01/02
+        type: string
+      title:
+        type: string
+    type: object
+  models.TaskRes:
+    properties:
+      created_at:
+        type: string
+      description:
+        type: string
+      developer_id:
+        type: string
+      end_date:
+        example: 2006/01/02
+        type: string
+      file_url:
+        type: string
+      id:
+        type: integer
+      started_date:
+        example: 2006/01/02
+        type: string
+      status:
+        type: string
+      title:
+        type: string
+      updated_at:
+        type: string
+    type: object
+  models.TaskUpdateReq:
+    properties:
+      description:
+        type: string
+      end_date:
+        example: 2006/01/02
+        type: string
+      file_url:
+        type: string
+      id:
+        type: integer
+      started_date:
+        example: 2006/01/02
+        type: string
+      title:
+        type: string
+    type: object
 host: localhost:7777
 info:
   contact:
@@ -34,6 +223,38 @@ info:
   title: Online Service Group Task api
   version: "1.0"
 paths:
+  /developer:
+    post:
+      consumes:
+      - application/json
+      description: Through this api, can create a developer
+      parameters:
+      - description: CreateRole
+        in: body
+        name: body
+        required: true
+        schema:
+          $ref: '#/definitions/models.DeveloperReq'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/models.DeveloperRes'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/models.FailureInfo'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/models.FailureInfo'
+      security:
+      - BearerAuth: []
+      summary: Create an employee
+      tags:
+      - Developer
   /employee:
     post:
       consumes:
@@ -61,10 +282,73 @@ paths:
           description: Internal Server Error
           schema:
             $ref: '#/definitions/models.FailureInfo'
+      security:
+      - BearerAuth: []
       summary: Create new employee
       tags:
       - Employee
+    put:
+      consumes:
+      - application/json
+      description: Through this api, can UPDATE an employee
+      parameters:
+      - description: UpdateEmployee
+        in: body
+        name: body
+        required: true
+        schema:
+          $ref: '#/definitions/models.EmployeeRes'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.EmployeeRes'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/models.FailureInfo'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/models.FailureInfo'
+      security:
+      - BearerAuth: []
+      summary: UPDATE an employee
+      tags:
+      - Employee
   /employee/{id}:
+    delete:
+      consumes:
+      - application/json
+      description: Through this api, can Delete an employee
+      parameters:
+      - description: id
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.Success'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/models.FailureInfo'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/models.FailureInfo'
+      security:
+      - BearerAuth: []
+      summary: DELETE an employee
+      tags:
+      - Employee
     get:
       consumes:
       - application/json
@@ -90,6 +374,8 @@ paths:
           description: Internal Server Error
           schema:
             $ref: '#/definitions/models.FailureInfo'
+      security:
+      - BearerAuth: []
       summary: GET an employee
       tags:
       - Employee
@@ -104,7 +390,7 @@ paths:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/models.FailureInfo'
+            $ref: '#/definitions/models.EmployeeList'
         "400":
           description: Bad Request
           schema:
@@ -113,9 +399,433 @@ paths:
           description: Internal Server Error
           schema:
             $ref: '#/definitions/models.FailureInfo'
+      security:
+      - BearerAuth: []
       summary: GET employees
       tags:
       - Employee
+  /image-upload:
+    post:
+      consumes:
+      - application/json
+      description: Through this api can upload media file
+      parameters:
+      - description: image-upload
+        in: formData
+        name: file
+        required: true
+        type: file
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/models.FileResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/models.FailureInfo'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/models.FailureInfo'
+      security:
+      - BearerAuth: []
+      summary: upload media file
+      tags:
+      - Media
+  /login/{phone}:
+    get:
+      consumes:
+      - application/json
+      description: Through this api, can login an employee
+      parameters:
+      - description: phone_number
+        in: query
+        name: phone
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.GetEmployee'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/models.FailureInfo'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/models.FailureInfo'
+      summary: Login an employee
+      tags:
+      - Login
+  /prject:
+    post:
+      consumes:
+      - application/json
+      description: Through this api, can create project
+      parameters:
+      - description: CreateProject
+        in: body
+        name: body
+        required: true
+        schema:
+          $ref: '#/definitions/models.ProjectReq'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/models.ProjectRes'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/models.FailureInfo'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/models.FailureInfo'
+      security:
+      - BearerAuth: []
+      summary: Create project
+      tags:
+      - Project
+    put:
+      consumes:
+      - application/json
+      description: Through this api, can update project
+      parameters:
+      - description: UpdateProject
+        in: body
+        name: body
+        required: true
+        schema:
+          $ref: '#/definitions/models.ProjectRes'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.ProjectRes'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/models.FailureInfo'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/models.FailureInfo'
+      security:
+      - BearerAuth: []
+      summary: Update project
+      tags:
+      - Project
+  /prject/{id}:
+    delete:
+      consumes:
+      - application/json
+      description: Through this api, can delete a project
+      parameters:
+      - description: prject_id
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.Success'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/models.FailureInfo'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/models.FailureInfo'
+      security:
+      - BearerAuth: []
+      summary: DELETE a project
+      tags:
+      - Project
+    get:
+      consumes:
+      - application/json
+      description: Through this api, can get a project
+      parameters:
+      - description: prject_id
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.ProjectRes'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/models.FailureInfo'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/models.FailureInfo'
+      security:
+      - BearerAuth: []
+      summary: Get a project
+      tags:
+      - Project
+  /prject/status:
+    put:
+      consumes:
+      - application/json
+      description: Through this api, can update project status
+      parameters:
+      - description: UpdateProjectStatus
+        in: body
+        name: body
+        required: true
+        schema:
+          $ref: '#/definitions/models.StatusUpdate'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.StatusUpdate'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/models.FailureInfo'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/models.FailureInfo'
+      security:
+      - BearerAuth: []
+      summary: Update project status
+      tags:
+      - Project
+  /prjects:
+    get:
+      consumes:
+      - application/json
+      description: Through this api, can get projects
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.AllProject'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/models.FailureInfo'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/models.FailureInfo'
+      security:
+      - BearerAuth: []
+      summary: Get projects
+      tags:
+      - Project
+  /task:
+    post:
+      consumes:
+      - application/json
+      description: Through this api, can create task
+      parameters:
+      - description: CreateTask
+        in: body
+        name: body
+        required: true
+        schema:
+          $ref: '#/definitions/models.TaskReq'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/models.TaskRes'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/models.FailureInfo'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/models.FailureInfo'
+      security:
+      - BearerAuth: []
+      summary: Create task
+      tags:
+      - Task
+    put:
+      consumes:
+      - application/json
+      description: Through this api, can update task
+      parameters:
+      - description: UpdateTask
+        in: body
+        name: body
+        required: true
+        schema:
+          $ref: '#/definitions/models.TaskUpdateReq'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.TaskRes'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/models.FailureInfo'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/models.FailureInfo'
+      security:
+      - BearerAuth: []
+      summary: UPDATE task
+      tags:
+      - Task
+  /task/{id}:
+    delete:
+      consumes:
+      - application/json
+      description: Through this api, can delete task
+      parameters:
+      - description: task_id
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.Success'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/models.FailureInfo'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/models.FailureInfo'
+      security:
+      - BearerAuth: []
+      summary: DELETE task
+      tags:
+      - Task
+    get:
+      consumes:
+      - application/json
+      description: Through this api, can create task
+      parameters:
+      - description: task_id
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.TaskRes'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/models.FailureInfo'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/models.FailureInfo'
+      security:
+      - BearerAuth: []
+      summary: Create task
+      tags:
+      - Task
+  /task/status:
+    put:
+      consumes:
+      - application/json
+      description: Through this api, can update task status
+      parameters:
+      - description: Update status
+        in: body
+        name: body
+        required: true
+        schema:
+          $ref: '#/definitions/models.StatusUpdate'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.StatusUpdate'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/models.FailureInfo'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/models.FailureInfo'
+      security:
+      - BearerAuth: []
+      summary: Update task status
+      tags:
+      - Task
+  /tasks:
+    get:
+      consumes:
+      - application/json
+      description: Through this api, can create task
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.AllTask'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/models.FailureInfo'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/models.FailureInfo'
+      security:
+      - BearerAuth: []
+      summary: Create task
+      tags:
+      - Task
 securityDefinitions:
   BearerAuth:
     in: header

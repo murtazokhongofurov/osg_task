@@ -1,6 +1,6 @@
 CREATE TABLE IF NOT EXISTS projects(
     id SERIAL NOT NULL PRIMARY KEY,
-    developer_id UUID REFERENCES developers(id),
+    employee_id UUID REFERENCES employees(id),
     project_name VARCHAR(250),
     status VARCHAR(100),
     file_url TEXT,

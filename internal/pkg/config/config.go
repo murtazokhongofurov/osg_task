@@ -9,17 +9,20 @@ import (
 )
 
 type Config struct {
-	HttpPort         string
-	PostgresUser     string
-	PostgresPassword string
-	PostgresDatabase string
-	PostgresHost     string
-	PostgresPort     string
-	LogLevel         string
-	PgxPoolSize      int
-	SigninKey        string
-	AuthConfigPath   string
-	CsvFilePath      string
+	HttpPort           string
+	PostgresUser       string
+	PostgresPassword   string
+	PostgresDatabase   string
+	PostgresHost       string
+	PostgresPort       string
+	LogLevel           string
+	PgxPoolSize        int
+	SigninKey          string
+	AuthConfigPath     string
+	CsvFilePath        string
+	AwsAccessKeyId     string
+	AwsSecretAccessKey string
+	OSGBucket          string
 }
 
 func Load() Config {
@@ -40,6 +43,9 @@ func Load() Config {
 	c.SigninKey = cast.ToString(getOrReturnDefault("SIGNIN_KEY", "signinkey"))
 	c.AuthConfigPath = cast.ToString(getOrReturnDefault("AUTH_FILE_PATH", "./internal/pkg/config/auth.conf"))
 	c.CsvFilePath = cast.ToString(getOrReturnDefault("CSV_FILE_PATH", "./internal/pkg/config/roles.csv"))
+	c.AwsAccessKeyId = cast.ToString(getOrReturnDefault("AWS_ACCESS_KEY_ID", "AWS_ACCESS_KEY_ID"))
+	c.AwsSecretAccessKey = cast.ToString(getOrReturnDefault("AWS_SECRET_ACCESS_KEY", "AWS_SECRET_ACCESS_KEY"))
+	c.OSGBucket = cast.ToString(getOrReturnDefault("OSG_BUCKET", "OSG_BUCKET"))
 
 	return c
 }

@@ -26,3 +26,8 @@ type TaskRes struct {
 type AllTask struct {
 	Tasks []TaskRes
 }
+
+type StatusUpdate struct {
+	Id     int
+	Status string
+}

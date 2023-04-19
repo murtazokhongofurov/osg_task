@@ -26,3 +26,17 @@ type Developer struct {
 type AllDeveloper struct {
 	Developers []Developer
 }
+
+
+type CheckfieldReq struct {
+	Field string
+	Value string
+} 
+
+type CheckfieldRes struct {
+	Exists bool
+}
+
+type PhoneNumber struct {
+	Phone string
+}
