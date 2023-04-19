@@ -13,3 +13,18 @@ p, unauthorized, /v1/login/{phone}, GET
 p, admin, /v1/image-upload, POST
 p, admin, /v1/developer, POST
 p, developer, /v1/developer, POST
+p, developer, /v1/attendance, POST
+p, developer, /v1/attendance, PUT
+p, developer, /v1/task, POST
+p, developer, /v1/task, PUT
+p, developer, /v1/tasks, GET
+p, developer, /v1/tasks/{id}, GET
+p, developer, /v1/comment, POST
+p, developer, /v1/comment/{id}, GET
+p, developer, /v1/comment, PUT
+p, developer, /v1/comment/{id}, DELETE
+p, developer, /v1/project/{id}, GET
+p, developer, /v1/projects, GET
+
+
+

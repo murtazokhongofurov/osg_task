@@ -12,7 +12,7 @@ import (
 // @Summary Create new employee
 // @Description Through this api, can create an employee
 // @Tags Employee
-// @Security BearerAuth
+// @Security BearerAuth 
 // @Accept json
 // @Produce json
 // @Param  body body models.EmployeeReq true "CreateEmployee"

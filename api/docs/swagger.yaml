@@ -1,5 +1,12 @@
 basePath: /v1
 definitions:
+  models.AllComment:
+    properties:
+      created_at:
+        items:
+          $ref: '#/definitions/models.CommentRes'
+        type: array
+    type: object
   models.AllProject:
     properties:
       projects:
@@ -13,6 +20,64 @@ definitions:
         items:
           $ref: '#/definitions/models.TaskRes'
         type: array
+    type: object
+  models.AttendanceReq:
+    properties:
+      employee_id:
+        type: string
+      type:
+        type: string
+    type: object
+  models.AttendanceRes:
+    properties:
+      created_at:
+        type: string
+      employee_id:
+        type: string
+      id:
+        type: integer
+      type:
+        type: string
+      updated_at:
+        type: string
+    type: object
+  models.AttendanceUpdateReq:
+    properties:
+      employee_id:
+        type: string
+      id:
+        type: integer
+      type:
+        type: string
+    type: object
+  models.CommentReq:
+    properties:
+      developer_id:
+        type: string
+      task_id:
+        type: integer
+      text:
+        type: string
+    type: object
+  models.CommentRes:
+    properties:
+      created_at:
+        type: string
+      developer_id:
+        type: string
+      id:
+        type: integer
+      task_id:
+        type: integer
+      text:
+        type: string
+    type: object
+  models.CommentUpdateReq:
+    properties:
+      id:
+        type: integer
+      text:
+        type: string
     type: object
   models.DeveloperReq:
     properties:
@@ -223,6 +288,194 @@ info:
   title: Online Service Group Task api
   version: "1.0"
 paths:
+  /:
+    put:
+      consumes:
+      - application/json
+      description: Through this api, can update attendance
+      parameters:
+      - description: UpdateAttendance
+        in: body
+        name: body
+        required: true
+        schema:
+          $ref: '#/definitions/models.AttendanceUpdateReq'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/models.AttendanceRes'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/models.FailureInfo'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/models.FailureInfo'
+      security:
+      - BearerAuth: []
+      summary: Update attendance
+      tags:
+      - Attendance
+  /attendance:
+    post:
+      consumes:
+      - application/json
+      description: Through this api, can create attendance
+      parameters:
+      - description: CreateAttendance
+        in: body
+        name: body
+        required: true
+        schema:
+          $ref: '#/definitions/models.AttendanceReq'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/models.AttendanceRes'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/models.FailureInfo'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/models.FailureInfo'
+      security:
+      - BearerAuth: []
+      summary: Create attendance
+      tags:
+      - Attendance
+  /comment:
+    post:
+      consumes:
+      - application/json
+      description: Through this api, can create comment
+      parameters:
+      - description: CreateComment
+        in: body
+        name: body
+        required: true
+        schema:
+          $ref: '#/definitions/models.CommentReq'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/models.CommentRes'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/models.FailureInfo'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/models.FailureInfo'
+      security:
+      - BearerAuth: []
+      summary: Create comment
+      tags:
+      - Comment
+    put:
+      consumes:
+      - application/json
+      description: Through this api, can UPDATE comments
+      parameters:
+      - description: Update comment
+        in: body
+        name: body
+        required: true
+        schema:
+          $ref: '#/definitions/models.CommentUpdateReq'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/models.AllComment'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/models.FailureInfo'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/models.CommentRes'
+      security:
+      - BearerAuth: []
+      summary: UPDATE comment
+      tags:
+      - Comment
+  /comment/{id}:
+    delete:
+      consumes:
+      - application/json
+      description: Through this api, can delete comment
+      parameters:
+      - description: commentId
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/models.Success'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/models.FailureInfo'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/models.FailureInfo'
+      security:
+      - BearerAuth: []
+      summary: DELETE comment
+      tags:
+      - Comment
+    get:
+      consumes:
+      - application/json
+      description: Through this api, can get comments
+      parameters:
+      - description: taskId
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/models.AllComment'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/models.FailureInfo'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/models.FailureInfo'
+      security:
+      - BearerAuth: []
+      summary: GET comments
+      tags:
+      - Comment
   /developer:
     post:
       consumes:
@@ -464,7 +717,7 @@ paths:
       summary: Login an employee
       tags:
       - Login
-  /prject:
+  /project:
     post:
       consumes:
       - application/json
@@ -527,7 +780,7 @@ paths:
       summary: Update project
       tags:
       - Project
-  /prject/{id}:
+  /project/{id}:
     delete:
       consumes:
       - application/json
@@ -588,7 +841,7 @@ paths:
       summary: Get a project
       tags:
       - Project
-  /prject/status:
+  /project/status:
     put:
       consumes:
       - application/json
@@ -620,7 +873,7 @@ paths:
       summary: Update project status
       tags:
       - Project
-  /prjects:
+  /projects:
     get:
       consumes:
       - application/json
@@ -806,6 +1059,37 @@ paths:
       consumes:
       - application/json
       description: Through this api, can create task
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.AllTask'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/models.FailureInfo'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/models.FailureInfo'
+      security:
+      - BearerAuth: []
+      summary: Create task
+      tags:
+      - Task
+  /tasks/{id}:
+    get:
+      consumes:
+      - application/json
+      description: Through this api, can create task
+      parameters:
+      - description: GetTasks
+        in: path
+        name: id
+        required: true
+        type: string
       produces:
       - application/json
       responses:

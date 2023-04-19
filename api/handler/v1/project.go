@@ -19,7 +19,7 @@ import (
 // @Success 201 {object} models.ProjectRes
 // @Failure 400 {object} models.FailureInfo
 // @Failure 500 {object} models.FailureInfo
-// @Router /prject [POST]
+// @Router /project [POST]
 func (h *handlerV1) CreateProject(c *gin.Context) {
 	_, err := GetClaims(*h, c)
 	if err != nil {
@@ -70,7 +70,7 @@ func (h *handlerV1) CreateProject(c *gin.Context) {
 // @Success 200 {object} models.ProjectRes
 // @Failure 400 {object} models.FailureInfo
 // @Failure 500 {object} models.FailureInfo
-// @Router /prject/{id} [GET]
+// @Router /project/{id} [GET]
 func (h *handlerV1) GetProject(c *gin.Context) {
 	_, err := GetClaims(*h, c)
 	if err != nil {
@@ -113,7 +113,7 @@ func (h *handlerV1) GetProject(c *gin.Context) {
 // @Success 200 {object} models.AllProject
 // @Failure 400 {object} models.FailureInfo
 // @Failure 500 {object} models.FailureInfo
-// @Router /prjects [GET]
+// @Router /projects [GET]
 func (h *handlerV1) GetAllProjects(c *gin.Context) {
 	_, err := GetClaims(*h, c)
 	if err != nil {
@@ -146,7 +146,7 @@ func (h *handlerV1) GetAllProjects(c *gin.Context) {
 // @Success 200 {object} models.ProjectRes
 // @Failure 400 {object} models.FailureInfo
 // @Failure 500 {object} models.FailureInfo
-// @Router /prject [PUT]
+// @Router /project [PUT]
 func (h *handlerV1) UpdateProject(c *gin.Context) {
 	_, err := GetClaims(*h, c)
 	if err != nil {
@@ -200,7 +200,7 @@ func (h *handlerV1) UpdateProject(c *gin.Context) {
 // @Success 200 {object} models.Success
 // @Failure 400 {object} models.FailureInfo
 // @Failure 500 {object} models.FailureInfo
-// @Router /prject/{id} [DELETE]
+// @Router /project/{id} [DELETE]
 func (h *handlerV1) DeleteProject(c *gin.Context) {
 	_, err := GetClaims(*h, c)
 	if err != nil {
@@ -250,7 +250,7 @@ func (h *handlerV1) DeleteProject(c *gin.Context) {
 // @Success 200 {object} models.StatusUpdate
 // @Failure 400 {object} models.FailureInfo
 // @Failure 500 {object} models.FailureInfo
-// @Router /prject/status [PUT]
+// @Router /project/status [PUT]
 func (h *handlerV1) UpdateProjectStatus(c *gin.Context) {
 	_, err := GetClaims(*h, c)
 	if err != nil {

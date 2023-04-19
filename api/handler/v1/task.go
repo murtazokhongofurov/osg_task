@@ -319,3 +319,38 @@ func (h *handlerV1) DeleteTask(c *gin.Context) {
 		StatusCode: http.StatusOK,
 	})
 }
+
+// @Summary Create task
+// @Description Through this api, can create task
+// @Tags Task
+// @Security BearerAuth
+// @Accept json
+// @Produce json
+// @Param  id path string true "GetTasks"
+// @Success 200 {object} models.AllTask
+// @Failure 400 {object} models.FailureInfo
+// @Failure 500 {object} models.FailureInfo
+// @Router /tasks/{id} [GET]
+func (h *handlerV1) GetTaskDevId(c *gin.Context) {
+	_, err := GetClaims(*h, c)
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, models.FailureInfo{
+			StatusCode:  http.StatusInternalServerError,
+			Description: "Invalid access token",
+		})
+		h.log.Error("Error while getting claims of access token ", err.Error())
+		return
+	}
+
+	id := c.Param("id")
+	res, err := h.storage.Task().GetTaskDeveloperId(id)
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, models.FailureInfo{
+			StatusCode:  http.StatusBadRequest,
+			Description: "Enter right info",
+		})
+		h.log.Error("Error while getting task ", err.Error())
+		return
+	}
+	c.JSON(http.StatusOK, res)
+}

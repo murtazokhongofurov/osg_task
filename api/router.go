@@ -75,9 +75,8 @@ func New(option *Options) *gin.Engine {
 	})
 
 	api := router.Group("/v1")
-
+	// employee
 	api.GET("login/:phone", handlerV1.Login)
-
 	api.POST("/employee", handlerV1.CreateEmployee)
 	api.GET("/employee/:id", handlerV1.GetEmployee)
 	api.GET("/employees", handlerV1.GetAllEmployees)
@@ -101,7 +100,19 @@ func New(option *Options) *gin.Engine {
 	api.GET("/tasks", handlerV1.GetAllTask)
 	api.PUT("/task", handlerV1.UpdateTask)
 	api.PUT("/task/status", handlerV1.UpdateTaskStatus)
-	api.DELETE("/task/:id", )
+	api.DELETE("/task/:id", handlerV1.DeleteTask)
+	api.GET("/tasks/:id", handlerV1.GetTaskDevId)
+
+	// attendance
+	api.POST("/attendance", handlerV1.CreateAttendance)
+	api.PUT("/attendance", handlerV1.UpdateAttendance)
+
+	// comment
+	api.POST("/comment", handlerV1.CreateComment)
+	api.GET("/comment/:id", handlerV1.GetComments)
+	api.PUT("/comment", handlerV1.UpdateComment)
+	api.DELETE("/comment/:id", handlerV1.DeleteComment)
+
 	url := ginSwagger.URL("swagger/doc.json")
 	api.GET("swagger/*any", ginSwagger.WrapHandler(swaggerfile.Handler, url))
 

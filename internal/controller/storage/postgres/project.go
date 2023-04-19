@@ -67,11 +67,13 @@ func (p *TaskRepo) GetAllProject() (*m.AllProject, error) {
 	}
 	for rows.Next() {
 		var temp m.ProjectRes
-		err = rows.Scan(&temp.Id, &temp.ProjectName,
-			&temp.StartedDate, &temp.FinishedDate, &temp.Status, &temp.FileUrl)
+		err = rows.Scan(&temp.Id, &temp.DeveloperId, &temp.ProjectName,
+			&started_date, &finished_date, &temp.Status, &temp.FileUrl)
 		if err != nil {
 			return &m.AllProject{}, err
 		}
+		temp.StartedDate = started_date.Format("2006/01/02")
+		temp.FinishedDate = finished_date.Format("2006/01/02")
 		res.Projects = append(res.Projects, temp)
 	}
 	return &res, nil
