@@ -421,11 +421,6 @@ const docTemplate = `{
                 }
             },
             "post": {
-                "security": [
-                    {
-                        "BearerAuth": []
-                    }
-                ],
                 "description": "Through this api, can create an employee",
                 "consumes": [
                     "application/json"
@@ -1589,7 +1584,7 @@ const docTemplate = `{
         "models.ProjectReq": {
             "type": "object",
             "properties": {
-                "developer_id": {
+                "admin_id": {
                     "type": "string"
                 },
                 "file_url": {
@@ -1611,7 +1606,7 @@ const docTemplate = `{
         "models.ProjectRes": {
             "type": "object",
             "properties": {
-                "developer_id": {
+                "admin_id": {
                     "type": "string"
                 },
                 "file_url": {
@@ -1664,9 +1659,6 @@ const docTemplate = `{
                 "description": {
                     "type": "string"
                 },
-                "developer_id": {
-                    "type": "string"
-                },
                 "end_date": {
                     "type": "string",
                     "example": "2006/01/02"
@@ -1677,6 +1669,9 @@ const docTemplate = `{
                 "started_date": {
                     "type": "string",
                     "example": "2006/01/02"
+                },
+                "teamlead_id": {
+                    "type": "string"
                 },
                 "title": {
                     "type": "string"
@@ -1690,9 +1685,6 @@ const docTemplate = `{
                     "type": "string"
                 },
                 "description": {
-                    "type": "string"
-                },
-                "developer_id": {
                     "type": "string"
                 },
                 "end_date": {
@@ -1710,6 +1702,9 @@ const docTemplate = `{
                     "example": "2006/01/02"
                 },
                 "status": {
+                    "type": "string"
+                },
+                "teamlead_id": {
                     "type": "string"
                 },
                 "title": {

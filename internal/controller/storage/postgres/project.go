@@ -22,9 +22,9 @@ func (p *TaskRepo) CreateProject(project *m.ProjectReq) (*m.ProjectRes, error) {
 		id, employee_id, project_name, started_date, finished_date, status, file_url
 	`
 	err := p.db.Pool.QueryRow(context.Background(), query,
-		project.DeveloperId, project.ProjectName, project.StartedDate,
+		project.AdminId, project.ProjectName, project.StartedDate,
 		project.FinishedDate, project.Status, project.FileUrl).
-		Scan(&res.Id, &res.DeveloperId, &res.ProjectName,
+		Scan(&res.Id, &res.AdminId, &res.ProjectName,
 			&started_date, &finished_date, &res.Status, &res.FileUrl)
 	if err != nil {
 		return &m.ProjectRes{}, err
@@ -44,7 +44,7 @@ func (p *TaskRepo) GetProject(id int) (*m.ProjectRes, error) {
 	WHERE 
 		id=$1`
 	err := p.db.Pool.QueryRow(context.Background(), query, id).
-		Scan(&res.Id, &res.DeveloperId, &res.ProjectName,
+		Scan(&res.Id, &res.AdminId, &res.ProjectName,
 			&started_date, &finished_date, &res.Status, &res.FileUrl)
 	if err != nil {
 		return &m.ProjectRes{}, err
@@ -67,7 +67,7 @@ func (p *TaskRepo) GetAllProject() (*m.AllProject, error) {
 	}
 	for rows.Next() {
 		var temp m.ProjectRes
-		err = rows.Scan(&temp.Id, &temp.DeveloperId, &temp.ProjectName,
+		err = rows.Scan(&temp.Id, &temp.AdminId, &temp.ProjectName,
 			&started_date, &finished_date, &temp.Status, &temp.FileUrl)
 		if err != nil {
 			return &m.AllProject{}, err
@@ -92,7 +92,7 @@ func (p *TaskRepo) UpdateProject(project *m.ProjectRes) (*m.ProjectRes, error) {
 	err := p.db.Pool.QueryRow(context.Background(), query,
 		project.ProjectName, project.StartedDate,
 		project.FinishedDate, project.FileUrl, project.Status).
-		Scan(&res.Id, &res.DeveloperId, &res.ProjectName, &started_date,
+		Scan(&res.Id, &res.AdminId, &res.ProjectName, &started_date,
 			&finished_date, &res.Status, &res.FileUrl)
 	if err != nil {
 		return &m.ProjectRes{}, err
@@ -126,7 +126,7 @@ func (p *TaskRepo) GetProjectEmployeeId(id string) (*m.AllProject, error) {
 	}
 	for rows.Next() {
 		temp := m.ProjectRes{}
-		err = rows.Scan(&temp.Id, &temp.DeveloperId, &temp.ProjectName,
+		err = rows.Scan(&temp.Id, &temp.AdminId, &temp.ProjectName,
 			&started_date, &finished_date, &temp.Status, &temp.FileUrl)
 		if err != nil {
 			return &m.AllProject{}, err

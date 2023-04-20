@@ -1,7 +1,7 @@
 package models
 
 type TaskReq struct {
-	DeveloperId string `json:"developer_id"`
+	TeamleadId  string `json:"teamlead_id"`
 	Title       string `json:"title"`
 	Description string `json:"description"`
 	FileUrl     string `json:"file_url"`
@@ -11,7 +11,7 @@ type TaskReq struct {
 
 type TaskRes struct {
 	Id          int    `json:"id"`
-	DeveloperId string `json:"developer_id"`
+	TeamleadId  string `json:"teamlead_id"`
 	Title       string `json:"title"`
 	Description string `json:"description"`
 	FileUrl     string `json:"file_url"`

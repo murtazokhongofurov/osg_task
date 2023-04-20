@@ -41,7 +41,7 @@ func (h *handlerV1) CreateTask(c *gin.Context) {
 		h.log.Error("Error while binding request", err.Error())
 		return
 	}
-	data, err := h.storage.Task().GetDeveloper(body.DeveloperId)
+	data, err := h.storage.Task().GetDeveloper(body.TeamleadId)
 	if err != nil {
 		c.JSON(http.StatusBadRequest, models.FailureInfo{
 			StatusCode:  http.StatusBadRequest,
@@ -52,7 +52,7 @@ func (h *handlerV1) CreateTask(c *gin.Context) {
 	}
 	if data.DeveloperRole == "teamlead" {
 		res, err := h.storage.Task().CreateTask(&repo.TaskReq{
-			DeveloperId: body.DeveloperId,
+			TeamleadId:  body.TeamleadId,
 			Title:       body.Title,
 			Description: body.Description,
 			FileUrl:     body.FileUrl,

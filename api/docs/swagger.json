@@ -414,11 +414,6 @@
                 }
             },
             "post": {
-                "security": [
-                    {
-                        "BearerAuth": []
-                    }
-                ],
                 "description": "Through this api, can create an employee",
                 "consumes": [
                     "application/json"
@@ -1582,7 +1577,7 @@
         "models.ProjectReq": {
             "type": "object",
             "properties": {
-                "developer_id": {
+                "admin_id": {
                     "type": "string"
                 },
                 "file_url": {
@@ -1604,7 +1599,7 @@
         "models.ProjectRes": {
             "type": "object",
             "properties": {
-                "developer_id": {
+                "admin_id": {
                     "type": "string"
                 },
                 "file_url": {
@@ -1657,9 +1652,6 @@
                 "description": {
                     "type": "string"
                 },
-                "developer_id": {
-                    "type": "string"
-                },
                 "end_date": {
                     "type": "string",
                     "example": "2006/01/02"
@@ -1670,6 +1662,9 @@
                 "started_date": {
                     "type": "string",
                     "example": "2006/01/02"
+                },
+                "teamlead_id": {
+                    "type": "string"
                 },
                 "title": {
                     "type": "string"
@@ -1683,9 +1678,6 @@
                     "type": "string"
                 },
                 "description": {
-                    "type": "string"
-                },
-                "developer_id": {
                     "type": "string"
                 },
                 "end_date": {
@@ -1703,6 +1695,9 @@
                     "example": "2006/01/02"
                 },
                 "status": {
+                    "type": "string"
+                },
+                "teamlead_id": {
                     "type": "string"
                 },
                 "title": {

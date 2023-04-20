@@ -16,14 +16,14 @@ func (t *TaskRepo) CreateTask(task *m.TaskReq) (*m.TaskRes, error) {
 	var res m.TaskRes
 	query := `
 	INSERT INTO 
-		tasks(employee_id, title, description, file_url, started_at, finished_at, status)
+		tasks(developer_id, title, description, file_url, started_at, finished_at, status)
 	VALUES
 		($1, $2, $3, $4, $5, $6, $7)
 	RETURNING 
-		id, employee_id, title, description, file_url, started_at, finished_at, status, created_at`
+		id, developer_id, title, description, file_url, started_at, finished_at, status, created_at`
 	err := t.db.Pool.QueryRow(context.Background(), query,
-		task.DeveloperId, task.Title, task.Description, task.FileUrl, task.StartedDate, task.EndDate, "new").
-		Scan(&res.Id, &res.DeveloperId, &res.Title, &res.Description, &res.FileUrl, &startedtime, &finishedtime, &res.Status, &createtime)
+		task.TeamleadId, task.Title, task.Description, task.FileUrl, task.StartedDate, task.EndDate, "todo").
+		Scan(&res.Id, &res.TeamleadId, &res.Title, &res.Description, &res.FileUrl, &startedtime, &finishedtime, &res.Status, &createtime)
 	if err != nil {
 		return &m.TaskRes{}, err
 	}
@@ -37,14 +37,14 @@ func (t *TaskRepo) GetTask(id int) (*m.TaskRes, error) {
 	var res m.TaskRes
 	query := `
 	SELECT
-		id, employee_id, title, description, file_url, 
+		id, developer_id, title, description, file_url, 
 		started_at, finished_at, status, created_at, updated_at
 	FROM 
 		tasks
 	WHERE 
 		id=$1`
 	err := t.db.Pool.QueryRow(context.Background(), query, id).
-		Scan(&res.Id, &res.DeveloperId, &res.Title, &res.Description,
+		Scan(&res.Id, &res.TeamleadId, &res.Title, &res.Description,
 			&res.FileUrl, &startedtime, &finishedtime, &res.Status, &createtime, &updatetime)
 	if err != nil {
 		return &m.TaskRes{}, err
@@ -66,10 +66,10 @@ func (t *TaskRepo) UpdateTask(task *m.TaskRes) (*m.TaskRes, error) {
 	WHERE
 		id=$6
 	RETURNING 
-		id, employee_id, title, description, file_url, started_at, finished_at, status, created_at, updated_at`
+		id, developer_id, title, description, file_url, started_at, finished_at, status, created_at, updated_at`
 	err := t.db.Pool.QueryRow(context.Background(), query,
 		task.Title, task.Description, task.FileUrl, task.StartedDate, task.EndDate, task.Id).
-		Scan(&res.Id, &res.DeveloperId, &res.Title, &res.Description, &res.FileUrl,
+		Scan(&res.Id, &res.TeamleadId, &res.Title, &res.Description, &res.FileUrl,
 			&startedtime, &finishedtime, &res.Status, &createtime, &updatetime)
 	if err != nil {
 		return &m.TaskRes{}, err
@@ -98,7 +98,7 @@ func (t *TaskRepo) GetTaskDeveloperId(id string) (*m.AllTask, error) {
 	FROM 
 		tasks
 	WHERE 
-		employee_id=$1`
+		developer_id=$1`
 	rows, err := t.db.Pool.Query(context.Background(), query, id)
 	if err != nil {
 		return &m.AllTask{}, err
@@ -118,7 +118,7 @@ func (t *TaskRepo) GetAllTask() (*m.AllTask, error) {
 	var res m.AllTask
 	query := `
 	SELECT 
-		id, employee_id, title, started_date, finished_date, status
+		id, developer_id, title, started_date, finished_date, status
 	FROM 
 		tasks`
 	rows, err := t.db.Pool.Query(context.Background(), query)
@@ -127,7 +127,7 @@ func (t *TaskRepo) GetAllTask() (*m.AllTask, error) {
 	}
 	for rows.Next() {
 		temp := m.TaskRes{}
-		err = rows.Scan(&temp.Id, &temp.DeveloperId, &temp.Title,
+		err = rows.Scan(&temp.Id, &temp.TeamleadId, &temp.Title,
 			&startedtime, &finishedtime, &temp.Status)
 		if err != nil {
 			return &m.AllTask{}, err

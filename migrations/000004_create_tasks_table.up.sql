@@ -1,6 +1,6 @@
 CREATE TABLE IF NOT EXISTS tasks(
     id SERIAL NOT NULL PRIMARY KEY,
-    employee_id UUID REFERENCES employees(id),
+    developer_id UUID REFERENCES developers(id),
     title VARCHAR(250),
     description TEXT,
     file_url TEXT,

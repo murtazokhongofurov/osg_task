@@ -172,7 +172,7 @@ definitions:
     type: object
   models.ProjectReq:
     properties:
-      developer_id:
+      admin_id:
         type: string
       file_url:
         type: string
@@ -187,7 +187,7 @@ definitions:
     type: object
   models.ProjectRes:
     properties:
-      developer_id:
+      admin_id:
         type: string
       file_url:
         type: string
@@ -222,8 +222,6 @@ definitions:
     properties:
       description:
         type: string
-      developer_id:
-        type: string
       end_date:
         example: 2006/01/02
         type: string
@@ -231,6 +229,8 @@ definitions:
         type: string
       started_date:
         example: 2006/01/02
+        type: string
+      teamlead_id:
         type: string
       title:
         type: string
@@ -240,8 +240,6 @@ definitions:
       created_at:
         type: string
       description:
-        type: string
-      developer_id:
         type: string
       end_date:
         example: 2006/01/02
@@ -254,6 +252,8 @@ definitions:
         example: 2006/01/02
         type: string
       status:
+        type: string
+      teamlead_id:
         type: string
       title:
         type: string
@@ -535,8 +535,6 @@ paths:
           description: Internal Server Error
           schema:
             $ref: '#/definitions/models.FailureInfo'
-      security:
-      - BearerAuth: []
       summary: Create new employee
       tags:
       - Employee

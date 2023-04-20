@@ -42,7 +42,7 @@ func (h *handlerV1) CreateProject(c *gin.Context) {
 		return
 	}
 	res, err := h.storage.Task().CreateProject(&repo.ProjectReq{
-		DeveloperId:  body.DeveloperId,
+		AdminId:      body.AdminId,
 		ProjectName:  body.ProjectName,
 		StartedDate:  body.StartedDate,
 		FinishedDate: body.FinishedDate,
@@ -170,7 +170,7 @@ func (h *handlerV1) UpdateProject(c *gin.Context) {
 	}
 	res, err := h.storage.Task().UpdateProject(&repo.ProjectRes{
 		Id:           body.Id,
-		DeveloperId:  body.DeveloperId,
+		AdminId:      body.AdminId,
 		ProjectName:  body.ProjectName,
 		StartedDate:  body.StartedDate,
 		FinishedDate: body.FinishedDate,

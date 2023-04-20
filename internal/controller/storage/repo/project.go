@@ -1,7 +1,7 @@
 package repo
 
 type ProjectReq struct {
-	DeveloperId  string
+	AdminId      string
 	ProjectName  string
 	StartedDate  string
 	FinishedDate string
@@ -11,7 +11,7 @@ type ProjectReq struct {
 
 type ProjectRes struct {
 	Id           int
-	DeveloperId  string
+	AdminId      string
 	ProjectName  string
 	StartedDate  string
 	FinishedDate string

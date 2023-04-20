@@ -1,7 +1,7 @@
 package repo
 
 type TaskReq struct {
-	DeveloperId string
+	TeamleadId string
 	Title       string
 	Description string
 	FileUrl     string
@@ -12,7 +12,7 @@ type TaskReq struct {
 
 type TaskRes struct {
 	Id          int
-	DeveloperId string
+	TeamleadId string
 	Title       string
 	Description string
 	FileUrl     string

@@ -9,10 +9,12 @@ import (
 	"github.com/osg_task/internal/controller/storage/repo"
 )
 
+
+
 // @Summary Create new employee
 // @Description Through this api, can create an employee
 // @Tags Employee
-// @Security BearerAuth 
+//Security BearerAuth
 // @Accept json
 // @Produce json
 // @Param  body body models.EmployeeReq true "CreateEmployee"
@@ -21,20 +23,20 @@ import (
 // @Failure 500 {object} models.FailureInfo
 // @Router /employee [POST]
 func (h *handlerV1) CreateEmployee(c *gin.Context) {
-	_, err := GetClaims(*h, c)
-	if err != nil {
-		c.JSON(http.StatusInternalServerError, models.FailureInfo{
-			StatusCode:  http.StatusInternalServerError,
-			Description: "Invalid access token",
-		})
-		h.log.Error("Error while getting claims of access token ", err.Error())
-		return
-	}
+	// _, err := GetClaims(*h, c)
+	// if err != nil {
+	// 	c.JSON(http.StatusInternalServerError, models.FailureInfo{
+	// 		StatusCode:  http.StatusInternalServerError,
+	// 		Description: "Invalid access token",
+	// 	})
+	// 	h.log.Error("Error while getting claims of access token ", err.Error())
+	// 	return
+	// }
 
 	var (
 		body models.EmployeeReq
 	)
-	err = c.ShouldBindJSON(&body)
+	err := c.ShouldBindJSON(&body)
 	if err != nil {
 		c.JSON(http.StatusBadRequest, models.FailureInfo{
 			StatusCode:  http.StatusBadRequest,
