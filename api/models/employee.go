@@ -43,4 +43,11 @@ type DeveloperRes struct {
 	Id            string `json:"id"`
 	EmployeeId    string `json:"employee_id"`
 	DeveloperRole string `json:"developer_role"`
+	FullName      string `json:"full_name"`
+	Position      string `json:"position"`
+	ProfilePhoto  string `json:"profile_photo"`
+}
+
+type AllDeveloperRole struct {
+	DeveloperRoles []DeveloperRes `json:"developers"`
 }

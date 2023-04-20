@@ -9,12 +9,10 @@ import (
 	"github.com/osg_task/internal/controller/storage/repo"
 )
 
-
-
 // @Summary Create new employee
 // @Description Through this api, can create an employee
 // @Tags Employee
-//Security BearerAuth
+// Security BearerAuth
 // @Accept json
 // @Produce json
 // @Param  body body models.EmployeeReq true "CreateEmployee"
@@ -349,4 +347,37 @@ func (h *handlerV1) CreateDeveloper(c *gin.Context) {
 		return
 	}
 	c.JSON(http.StatusCreated, res)
+}
+
+// @Summary GET all developer roles
+// @Description Through this api, can get all developer roles
+// @Tags Developer
+// @Security BearerAuth
+// @Accept json
+// @Produce json
+// @Success 200 {object} models.AllDeveloperRole
+// @Failure 400 {object} models.FailureInfo
+// @Failure 500 {object} models.FailureInfo
+// @Router /developer/roles [GET]
+func (h *handlerV1) GetDeveloperRoles(c *gin.Context) {
+	_, err := GetClaims(*h, c)
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, models.FailureInfo{
+			StatusCode:  http.StatusInternalServerError,
+			Description: "Invalid access token",
+		})
+		h.log.Error("Error while getting claims of access token ", err.Error())
+		return
+	}
+
+	res, err := h.storage.Task().GetAllDeveloperRole()
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, models.FailureInfo{
+			StatusCode:  http.StatusInternalServerError,
+			Description: "Something went wrong",
+		})
+		h.log.Error("Error while getting developers roles", err.Error())
+		return
+	}
+	c.JSON(http.StatusOK, res)
 }

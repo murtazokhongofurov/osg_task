@@ -24,6 +24,7 @@ type TaskRes struct {
 
 type TaskUpdateReq struct {
 	Id          int    `json:"id"`
+	TeamleadId  string `json:"teamlead_id"`
 	Title       string `json:"title"`
 	Description string `json:"description"`
 	FileUrl     string `json:"file_url"`
@@ -38,4 +39,9 @@ type AllTask struct {
 type StatusUpdate struct {
 	Id     int    `json:"id"`
 	Status string `json:"status"`
+}
+
+type TaskPermissionDel struct {
+	Id         int    `json:"id"`
+	TeamleadId string `json:"teamlead_id"`
 }

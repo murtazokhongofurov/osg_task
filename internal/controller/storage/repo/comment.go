@@ -7,13 +7,14 @@ type CommentReq struct {
 }
 
 type CommentRes struct {
-	Id          int
-	DeveloperId string
-	TaskId      int
-	Text        string
-	CreatedAt   string
+	Id          int    `json:"id"`
+	DeveloperId string `json:"developer_id"`
+	TaskId      int    `json:"task_id"`
+	Text        string `json:"text"`
+	CreatedAt   string `json:"created_at"`
+	UpdatedAt   string `json:"updated_at"`
 }
 
 type AllComment struct {
-	Comments []CommentRes
+	Comments []CommentRes `json:"comments"`
 }

@@ -73,7 +73,7 @@ func (h *handlerV1) CreateTask(c *gin.Context) {
 	} else {
 		c.JSON(http.StatusBadRequest, models.FailureInfo{
 			StatusCode:  http.StatusBadRequest,
-			Description: "Enter right info",
+			Description: "Only teamlead can add task",
 		})
 		h.log.Error("Error while checking developer role", err.Error())
 		return
@@ -135,7 +135,7 @@ func (h *handlerV1) GetTask(c *gin.Context) {
 // @Failure 500 {object} models.FailureInfo
 // @Router /task [PUT]
 func (h *handlerV1) UpdateTask(c *gin.Context) {
-	claim, err := GetClaims(*h, c)
+	_, err := GetClaims(*h, c)
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, models.FailureInfo{
 			StatusCode:  http.StatusInternalServerError,
@@ -154,7 +154,7 @@ func (h *handlerV1) UpdateTask(c *gin.Context) {
 		h.log.Error("Error while binding request", err.Error())
 		return
 	}
-	data, err := h.storage.Task().GetDeveloper(claim.Sub)
+	data, err := h.storage.Task().GetDeveloper(body.TeamleadId)
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, models.FailureInfo{
 			StatusCode:  http.StatusInternalServerError,
@@ -185,7 +185,7 @@ func (h *handlerV1) UpdateTask(c *gin.Context) {
 	} else {
 		c.JSON(http.StatusBadRequest, models.FailureInfo{
 			StatusCode:  http.StatusBadRequest,
-			Description: "Permission developer role",
+			Description: "Only teamlead can update task",
 		})
 		h.log.Error("Error while checking role developer info", err.Error())
 		return
@@ -274,17 +274,17 @@ func (h *handlerV1) UpdateTaskStatus(c *gin.Context) {
 	c.JSON(http.StatusOK, res)
 }
 
-// @Summary DELETE task
+// @Summary 	DELETE task
 // @Description Through this api, can delete task
-// @Tags Task
+// @Tags 	 Task
 // @Security BearerAuth
-// @Accept json
+// @Accept 	json
 // @Produce json
-// @Param  id path int true "task_id"
+// @Param  	id path int true "task_id"
 // @Success 200 {object} models.Success
 // @Failure 400 {object} models.FailureInfo
 // @Failure 500 {object} models.FailureInfo
-// @Router /task/{id} [DELETE]
+// @Router 	/task/{id} [DELETE]
 func (h *handlerV1) DeleteTask(c *gin.Context) {
 	_, err := GetClaims(*h, c)
 	if err != nil {
@@ -295,38 +295,57 @@ func (h *handlerV1) DeleteTask(c *gin.Context) {
 		h.log.Error("Error while getting claims of access token ", err.Error())
 		return
 	}
-	id := c.Param("id")
-	task_id, err := strconv.ParseInt(id, 10, 64)
+	body := models.TaskPermissionDel{}
+	err = c.ShouldBindJSON(&body)
 	if err != nil {
 		c.JSON(http.StatusBadRequest, models.FailureInfo{
 			StatusCode:  http.StatusBadRequest,
-			Description: "ENter right info",
+			Description: "Enter right info",
 		})
-		h.log.Error("Error while parsing id ", err.Error())
+		h.log.Error("Error while binding request", err.Error())
 		return
 	}
-	err = h.storage.Task().DeleteTask(int(task_id))
+	check, err := h.storage.Task().GetDeveloper(body.TeamleadId)
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, models.FailureInfo{
 			StatusCode:  http.StatusInternalServerError,
 			Description: "Something went wrong",
 		})
-		h.log.Error("Error while delete task ", err.Error())
+		h.log.Error("Error while getting developer role", err.Error())
 		return
 	}
-	c.JSON(http.StatusOK, models.Success{
-		Message:    "Successfully deleted task",
-		StatusCode: http.StatusOK,
-	})
+	if check.DeveloperRole == "teamlead" {
+		err = h.storage.Task().DeleteTask(body.Id)
+		if err != nil {
+			c.JSON(http.StatusInternalServerError, models.FailureInfo{
+				StatusCode:  http.StatusInternalServerError,
+				Description: "Something went wrong",
+			})
+			h.log.Error("Error while delete task ", err.Error())
+			return
+		}
+		c.JSON(http.StatusOK, models.Success{
+			Message:    "Successfully deleted task",
+			StatusCode: http.StatusOK,
+		})
+	} else {
+		c.JSON(http.StatusBadRequest, models.FailureInfo{
+			StatusCode:  http.StatusBadRequest,
+			Description: "Only teamlead can delete task",
+		})
+		h.log.Error("Error while deleting task", err.Error())
+		return
+	}
+
 }
 
-// @Summary Create task
-// @Description Through this api, can create task
+// @Summary GET developers tasks
+// @Description Through this api, can get developers task by developer_id
 // @Tags Task
 // @Security BearerAuth
 // @Accept json
 // @Produce json
-// @Param  id path string true "GetTasks"
+// @Param   id path string true "developer_id"
 // @Success 200 {object} models.AllTask
 // @Failure 400 {object} models.FailureInfo
 // @Failure 500 {object} models.FailureInfo

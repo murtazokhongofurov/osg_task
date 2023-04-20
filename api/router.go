@@ -83,6 +83,7 @@ func New(option *Options) *gin.Engine {
 	api.PUT("/employee", handlerV1.UpdateEmployee)
 	api.DELETE("/employee/:id", handlerV1.DeleteEmployee)
 	api.POST("/developer", handlerV1.CreateDeveloper)
+	api.GET("/developer/roles", handlerV1.GetDeveloperRoles)
 	// media
 	api.POST("/image-upload", handlerV1.UploadMedia)
 
@@ -105,7 +106,6 @@ func New(option *Options) *gin.Engine {
 
 	// attendance
 	api.POST("/attendance", handlerV1.CreateAttendance)
-	api.PUT("/attendance", handlerV1.UpdateAttendance)
 
 	// comment
 	api.POST("/comment", handlerV1.CreateComment)

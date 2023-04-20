@@ -8,9 +8,10 @@ type TaskStorageI interface {
 	DeleteEmployee(id string) error
 	CheckField(*CheckfieldReq) (*CheckfieldRes, error)
 	GetEmployeeByPhone(*PhoneNumber) (*Employee, error)
-
+	
 	CreateDeveloper(*Developer) (*Developer, error)
 	GetDeveloper(id string) (*Developer, error)
+	GetAllDeveloperRole() (*AllDeveloper, error)
 
 	CreateProject(*ProjectReq) (*ProjectRes, error)
 	GetProject(id int) (*ProjectRes, error)

@@ -6,11 +6,11 @@ type AttendanceReq struct {
 }
 
 type AttendanceRes struct {
-	Id         int
-	EmployeeId string
-	Type       string
-	CreatedAt  string
-	UpdatedAt  string
+	Id         int    `json:"id"`
+	EmployeeId string `json:"employee_id"`
+	Type       string `json:"type"`
+	CreatedAt  string `json:"created_at"`
+	UpdatedAt  string `json:"updated_at"`
 }
 
 type AttendanceUpdateReq struct {
@@ -20,5 +20,5 @@ type AttendanceUpdateReq struct {
 }
 
 type AllAttendance struct {
-	Attendances []AttendanceRes
+	Attendances []AttendanceRes `json:"attendances"`
 }

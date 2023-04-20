@@ -10,14 +10,14 @@ import (
 
 // @Summary Login an employee
 // @Description Through this api, can login an employee
-// @Tags Login
-// @Accept json
+// @Tags 	Employee Login
+// @Accept 	json
 // @Produce json
 // @Param  	phone query string true "phone_number"
 // @Success 200 {object} models.GetEmployee
 // @Failure 400 {object} models.FailureInfo
 // @Failure 500 {object} models.FailureInfo
-// @Router /login/{phone} [GET]
+// @Router 	/login/{phone} [GET]
 func (h *handlerV1) Login(c *gin.Context) {
 	phone := c.Query("phone")
 

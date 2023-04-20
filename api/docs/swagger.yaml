@@ -7,6 +7,13 @@ definitions:
           $ref: '#/definitions/models.CommentRes'
         type: array
     type: object
+  models.AllDeveloperRole:
+    properties:
+      developers:
+        items:
+          $ref: '#/definitions/models.DeveloperRes'
+        type: array
+    type: object
   models.AllProject:
     properties:
       projects:
@@ -39,15 +46,6 @@ definitions:
       type:
         type: string
       updated_at:
-        type: string
-    type: object
-  models.AttendanceUpdateReq:
-    properties:
-      employee_id:
-        type: string
-      id:
-        type: integer
-      type:
         type: string
     type: object
   models.CommentReq:
@@ -92,7 +90,13 @@ definitions:
         type: string
       employee_id:
         type: string
+      full_name:
+        type: string
       id:
+        type: string
+      position:
+        type: string
+      profile_photo:
         type: string
     type: object
   models.EmployeeList:
@@ -274,6 +278,8 @@ definitions:
       started_date:
         example: 2006/01/02
         type: string
+      teamlead_id:
+        type: string
       title:
         type: string
     type: object
@@ -288,38 +294,6 @@ info:
   title: Online Service Group Task api
   version: "1.0"
 paths:
-  /:
-    put:
-      consumes:
-      - application/json
-      description: Through this api, can update attendance
-      parameters:
-      - description: UpdateAttendance
-        in: body
-        name: body
-        required: true
-        schema:
-          $ref: '#/definitions/models.AttendanceUpdateReq'
-      produces:
-      - application/json
-      responses:
-        "201":
-          description: Created
-          schema:
-            $ref: '#/definitions/models.AttendanceRes'
-        "400":
-          description: Bad Request
-          schema:
-            $ref: '#/definitions/models.FailureInfo'
-        "500":
-          description: Internal Server Error
-          schema:
-            $ref: '#/definitions/models.FailureInfo'
-      security:
-      - BearerAuth: []
-      summary: Update attendance
-      tags:
-      - Attendance
   /attendance:
     post:
       consumes:
@@ -449,9 +423,9 @@ paths:
     get:
       consumes:
       - application/json
-      description: Through this api, can get comments
+      description: Through this api, can get comments by task_id
       parameters:
-      - description: taskId
+      - description: task_id
         in: path
         name: id
         required: true
@@ -473,7 +447,7 @@ paths:
             $ref: '#/definitions/models.FailureInfo'
       security:
       - BearerAuth: []
-      summary: GET comments
+      summary: GET comments of task
       tags:
       - Comment
   /developer:
@@ -506,6 +480,31 @@ paths:
       security:
       - BearerAuth: []
       summary: Create an employee
+      tags:
+      - Developer
+  /developer/roles:
+    get:
+      consumes:
+      - application/json
+      description: Through this api, can get all developer roles
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.AllDeveloperRole'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/models.FailureInfo'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/models.FailureInfo'
+      security:
+      - BearerAuth: []
+      summary: GET all developer roles
       tags:
       - Developer
   /employee:
@@ -714,7 +713,7 @@ paths:
             $ref: '#/definitions/models.FailureInfo'
       summary: Login an employee
       tags:
-      - Login
+      - Employee Login
   /project:
     post:
       consumes:
@@ -1081,9 +1080,9 @@ paths:
     get:
       consumes:
       - application/json
-      description: Through this api, can create task
+      description: Through this api, can get developers task by developer_id
       parameters:
-      - description: GetTasks
+      - description: developer_id
         in: path
         name: id
         required: true
@@ -1105,7 +1104,7 @@ paths:
             $ref: '#/definitions/models.FailureInfo'
       security:
       - BearerAuth: []
-      summary: Create task
+      summary: GET developers tasks
       tags:
       - Task
 securityDefinitions:

@@ -21,57 +21,6 @@ const docTemplate = `{
     "host": "{{.Host}}",
     "basePath": "{{.BasePath}}",
     "paths": {
-        "/": {
-            "put": {
-                "security": [
-                    {
-                        "BearerAuth": []
-                    }
-                ],
-                "description": "Through this api, can update attendance",
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "Attendance"
-                ],
-                "summary": "Update attendance",
-                "parameters": [
-                    {
-                        "description": "UpdateAttendance",
-                        "name": "body",
-                        "in": "body",
-                        "required": true,
-                        "schema": {
-                            "$ref": "#/definitions/models.AttendanceUpdateReq"
-                        }
-                    }
-                ],
-                "responses": {
-                    "201": {
-                        "description": "Created",
-                        "schema": {
-                            "$ref": "#/definitions/models.AttendanceRes"
-                        }
-                    },
-                    "400": {
-                        "description": "Bad Request",
-                        "schema": {
-                            "$ref": "#/definitions/models.FailureInfo"
-                        }
-                    },
-                    "500": {
-                        "description": "Internal Server Error",
-                        "schema": {
-                            "$ref": "#/definitions/models.FailureInfo"
-                        }
-                    }
-                }
-            }
-        },
         "/attendance": {
             "post": {
                 "security": [
@@ -230,7 +179,7 @@ const docTemplate = `{
                         "BearerAuth": []
                     }
                 ],
-                "description": "Through this api, can get comments",
+                "description": "Through this api, can get comments by task_id",
                 "consumes": [
                     "application/json"
                 ],
@@ -240,11 +189,11 @@ const docTemplate = `{
                 "tags": [
                     "Comment"
                 ],
-                "summary": "GET comments",
+                "summary": "GET comments of task",
                 "parameters": [
                     {
                         "type": "integer",
-                        "description": "taskId",
+                        "description": "task_id",
                         "name": "id",
                         "in": "path",
                         "required": true
@@ -353,6 +302,46 @@ const docTemplate = `{
                         "description": "Created",
                         "schema": {
                             "$ref": "#/definitions/models.DeveloperRes"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/models.FailureInfo"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/models.FailureInfo"
+                        }
+                    }
+                }
+            }
+        },
+        "/developer/roles": {
+            "get": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
+                "description": "Through this api, can get all developer roles",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Developer"
+                ],
+                "summary": "GET all developer roles",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/models.AllDeveloperRole"
                         }
                     },
                     "400": {
@@ -660,7 +649,7 @@ const docTemplate = `{
                     "application/json"
                 ],
                 "tags": [
-                    "Login"
+                    "Employee Login"
                 ],
                 "summary": "Login an employee",
                 "parameters": [
@@ -1275,7 +1264,7 @@ const docTemplate = `{
                         "BearerAuth": []
                     }
                 ],
-                "description": "Through this api, can create task",
+                "description": "Through this api, can get developers task by developer_id",
                 "consumes": [
                     "application/json"
                 ],
@@ -1285,11 +1274,11 @@ const docTemplate = `{
                 "tags": [
                     "Task"
                 ],
-                "summary": "Create task",
+                "summary": "GET developers tasks",
                 "parameters": [
                     {
                         "type": "string",
-                        "description": "GetTasks",
+                        "description": "developer_id",
                         "name": "id",
                         "in": "path",
                         "required": true
@@ -1326,6 +1315,17 @@ const docTemplate = `{
                     "type": "array",
                     "items": {
                         "$ref": "#/definitions/models.CommentRes"
+                    }
+                }
+            }
+        },
+        "models.AllDeveloperRole": {
+            "type": "object",
+            "properties": {
+                "developers": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/models.DeveloperRes"
                     }
                 }
             }
@@ -1379,20 +1379,6 @@ const docTemplate = `{
                     "type": "string"
                 },
                 "updated_at": {
-                    "type": "string"
-                }
-            }
-        },
-        "models.AttendanceUpdateReq": {
-            "type": "object",
-            "properties": {
-                "employee_id": {
-                    "type": "string"
-                },
-                "id": {
-                    "type": "integer"
-                },
-                "type": {
                     "type": "string"
                 }
             }
@@ -1462,7 +1448,16 @@ const docTemplate = `{
                 "employee_id": {
                     "type": "string"
                 },
+                "full_name": {
+                    "type": "string"
+                },
                 "id": {
+                    "type": "string"
+                },
+                "position": {
+                    "type": "string"
+                },
+                "profile_photo": {
                     "type": "string"
                 }
             }
@@ -1734,6 +1729,9 @@ const docTemplate = `{
                 "started_date": {
                     "type": "string",
                     "example": "2006/01/02"
+                },
+                "teamlead_id": {
+                    "type": "string"
                 },
                 "title": {
                     "type": "string"

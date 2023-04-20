@@ -189,3 +189,24 @@ func (e *TaskRepo) GetDeveloper(id string) (*m.Developer, error) {
 	}
 	return &res, nil
 }
+
+func (e *TaskRepo) GetAllDeveloperRole() (*m.AllDeveloper, error) {
+	var res m.AllDeveloper
+	rows, err := e.db.Pool.Query(context.Background(),
+		`SELECT 
+			d.id, d.employee_id, d.developer_role, e.full_name, e.position, e.profile_photo, e.phone
+		FROM 
+			developers d INNER JOIN employees e ON d.employee_id=e.id`)
+	if err != nil {
+		return &m.AllDeveloper{}, err
+	}
+	for rows.Next() {
+		temp := m.DeveloperInfo{}
+		err = rows.Scan(&temp.Id, &temp.EmployeeId, &temp.DeveloperRole, &temp.FullName, &temp.Position, &temp.ProfilePhoto, &temp.Phone)
+		if err != nil {
+			return &m.AllDeveloper{}, err
+		}
+		res.Developers = append(res.Developers, temp)
+	}
+	return &res, nil
+}

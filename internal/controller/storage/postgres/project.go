@@ -23,7 +23,7 @@ func (p *TaskRepo) CreateProject(project *m.ProjectReq) (*m.ProjectRes, error) {
 	`
 	err := p.db.Pool.QueryRow(context.Background(), query,
 		project.AdminId, project.ProjectName, project.StartedDate,
-		project.FinishedDate, project.Status, project.FileUrl).
+		project.FinishedDate,"Todo", project.FileUrl).
 		Scan(&res.Id, &res.AdminId, &res.ProjectName,
 			&started_date, &finished_date, &res.Status, &res.FileUrl)
 	if err != nil {

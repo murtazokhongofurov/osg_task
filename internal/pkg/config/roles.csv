@@ -26,6 +26,7 @@ p, developer, /v1/comment, PUT
 p, developer, /v1/comment/{id}, DELETE
 p, developer, /v1/project/{id}, GET
 p, developer, /v1/projects, GET
+p, developer, /v1/developer/roles, GET
 
 
 

@@ -56,13 +56,13 @@ func (h *handlerV1) CreateComment(c *gin.Context) {
 	c.JSON(http.StatusCreated, res)
 }
 
-// @Summary GET comments
-// @Description Through this api, can get comments
+// @Summary GET comments of task
+// @Description Through this api, can get comments by task_id
 // @Tags Comment
 // @Security BearerAuth
 // @Accept json
 // @Produce json
-// @Param 	id path int true "taskId"
+// @Param 	id path int true "task_id"
 // @Success 201 {object} models.AllComment
 // @Failure 400 {object} models.FailureInfo
 // @Failure 500 {object} models.FailureInfo

@@ -1,7 +1,7 @@
 package repo
 
 type TaskReq struct {
-	TeamleadId string
+	TeamleadId  string
 	Title       string
 	Description string
 	FileUrl     string
@@ -11,20 +11,20 @@ type TaskReq struct {
 }
 
 type TaskRes struct {
-	Id          int
-	TeamleadId string
-	Title       string
-	Description string
-	FileUrl     string
-	StartedDate string
-	EndDate     string
-	Status      string
-	CreatedAt   string
-	UpdatedAt   string
+	Id          int    `json:"id"`
+	TeamleadId  string `json:"teamlead_id"`
+	Title       string `json:"title"`
+	Description string `json:"description"`
+	FileUrl     string `json:"file_url"`
+	StartedDate string `json:"started_date"`
+	EndDate     string `json:"end_date"`
+	Status      string `json:"status"`
+	CreatedAt   string `json:"created_at"`
+	UpdatedAt   string `json:"updated_at"`
 }
 
 type AllTask struct {
-	Tasks []TaskRes
+	Tasks []TaskRes `json:"tasks"`
 }
 
 type StatusUpdate struct {

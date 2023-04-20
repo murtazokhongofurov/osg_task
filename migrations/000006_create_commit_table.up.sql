@@ -3,5 +3,6 @@ CREATE TABLE IF NOT EXISTS comment(
     developer_id UUID REFERENCES developers(id),
     task_id INT REFERENCES tasks(id),
     text TEXT,
-    created_at TIMESTAMP WITHOUT TIME ZONE NOT NULL DEFAULT NOW()
+    created_at TIMESTAMP WITHOUT TIME ZONE NOT NULL DEFAULT NOW(),
+    updated_at TIMESTAMP WITHOUT TIME ZONE NOT NULL DEFAULT NOW()
 );
